@@ -66,9 +66,13 @@ async function verifyApproveButton(interaction, memberId) {
   // Grant the member role
   const member = await interaction.guild.members.fetch(memberId);
   const role = interaction.guild.roles.cache.get(process.env.MEMBER_ROLE_ID);
+  const unverifiedRole = interaction.guild.roles.cache.get(
+    process.env.UNVERIFIED_ROLE_ID
+  );
 
   if (role) {
     await member.roles.add(role);
+    await member.roles.remove(unverifiedRole);
     await interaction.reply({
       content: `User <@${memberId}> has been approved and granted the member role.`,
       ephemeral: true,
